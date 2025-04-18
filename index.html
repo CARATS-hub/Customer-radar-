@@ -1,1 +1,78 @@
-<!DOCTYPE html><html><head><title>Customer Radar</title></head><body><h1>Welcome to Customer Radar</h1></body></html>
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Radar</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Discover Real-Time Customers with AI</h1>
+    <p>Enter your business type and let our AI show you where your customers are online.</p>
+    <input type="text" id="niche-input" placeholder="e.g., Fitness Coach, Online Store..." />
+    <button onclick="findCustomers()">Find Customers</button>
+    <button onclick="showPremium()" class="premium-btn">Go Premium</button>
+    <button onclick="showReferral()" class="referral-btn">Earn Premium Time</button>
+  </header>  <section id="leads-section" style="display:none;">
+    <h2>Sample Leads (Real-Time AI Coming Soon)</h2>
+    <div id="leads"></div>
+  </section>  <section id="referral-section" style="display:none;">
+    <h2>Earn Premium Time</h2>
+    <p>Refer 5 friends to earn 32 hours of Premium Access!</p>
+    <input type="text" value="https://yourapp.com/referral?user=12345" readonly />
+    <button onclick="copyReferral()">Copy Referral Link</button>
+  </section>  <section id="premium-section" style="display:none;">
+    <h2>Upgrade to Premium</h2>
+    <p>Premium Benefits:</p>
+    <ul>
+      <li>More daily leads</li>
+      <li>Real-time scanning</li>
+      <li>Advanced customer filters</li>
+    </ul>
+    <button onclick="checkout()">Upgrade Now (Stripe)</button>
+  </section>  <footer>
+    <p>&copy; 2025 Customer Radar</p>
+    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+  </footer>  <script>
+    function findCustomers() {
+      document.getElementById('leads-section').style.display = 'block';
+      const leads = [
+        'Sarah, posting about skincare routines on Twitter',
+        'Mike, asking for web design help on Reddit',
+        'Jessica, looking for a personal trainer on Facebook'
+      ];
+      const leadsContainer = document.getElementById('leads');
+      leadsContainer.innerHTML = '';
+      leads.forEach(lead => {
+        const card = document.createElement('div');
+        card.innerHTML = `
+          <p>${lead}</p>
+          <button>Save Lead</button>
+          <button>Visit Profile</button>
+        `;
+        leadsContainer.appendChild(card);
+      });
+    }
+
+    function showReferral() {
+      document.getElementById('referral-section').style.display = 'block';
+      document.getElementById('premium-section').style.display = 'none';
+    }
+
+    function showPremium() {
+      document.getElementById('premium-section').style.display = 'block';
+      document.getElementById('referral-section').style.display = 'none';
+    }
+
+    function copyReferral() {
+      const input = document.querySelector('#referral-section input');
+      input.select();
+      document.execCommand('copy');
+      alert('Referral link copied!');
+    }
+
+    function checkout() {
+      alert('Redirecting to Stripe checkout (mock)...');
+    }
+  </script></body>
+</html>
