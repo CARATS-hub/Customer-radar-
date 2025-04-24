@@ -1,98 +1,95 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+document.addEventListener("DOMContentLoaded", () => {
+  const leadsSection = document.getElementById("leads-section");
+  const leadsContainer = document.getElementById("leads");
+  const referralSection = document.getElementById("referral-section");
+  const premiumSection = document.getElementById("premium-section");
 
-export default function LandingPage() {
-  const [niche, setNiche] = useState("");
-
-  const handleFindCustomers = () => {
-    if (!niche) {
-      alert("Please enter your business type or niche.");
-      return;
-    }
-
-    // Simulate action (replace with real API call later)
-    console.log("Searching for leads in:", niche);
-    alert(`Finding leads for "${niche}"...`);
+  // Utility
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) section.scrollIntoView({ behavior: "smooth" });
   };
 
-  return (
-    <div className="min-h-screen bg-white text-gray-900">
-      {/* Header */}
-      <header className="sticky top-0 bg-white shadow z-10 p-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Customer Radar</h1>
-        <nav className="space-x-4">
-          <Button variant="ghost">Pricing</Button>
-          <Button variant="ghost">Login</Button>
-          <Button>Sign Up</Button>
-        </nav>
-      </header>
+  const findCustomers = () => {
+    leadsSection.style.display = "block";
+    leadsContainer.innerHTML = "";
 
-      {/* Hero Section */}
-      <section className="text-center py-20 px-4 bg-gradient-to-b from-blue-100 to-white">
-        <h2 className="text-4xl font-extrabold mb-4">Discover Customers in Real-Time with AI</h2>
-        <p className="text-lg mb-6">Enter your business type and let our AI find leads online for you.</p>
-        <div className="max-w-md mx-auto flex gap-2">
-          <Input
-            value={niche}
-            onChange={(e) => setNiche(e.target.value)}
-            placeholder="e.g. Fitness Coach, Online Store..."
-          />
-          <Button onClick={handleFindCustomers}>Find Customers</Button>
-        </div>
-      </section>
+    const leads = [
+      "Sarah, posting about skincare routines on Twitter",
+      "Mike, asking for web design help on Reddit",
+      "Jessica, looking for a personal trainer on Facebook",
+    ];
 
-      {/* How It Works */}
-      <section className="py-20 px-6 bg-gray-50">
-        <h3 className="text-3xl font-bold text-center mb-10">How It Works</h3>
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {["Tell Us Your Niche", "Get Real-Time Leads", "Reach Out & Grow"].map((title, i) => (
-            <Card key={i}>
-              <CardContent className="p-6">
-                <h4 className="text-xl font-semibold mb-2">{`${i + 1}. ${title}`}</h4>
-                <p>
-                  {i === 0
-                    ? "Input your business type or niche."
-                    : i === 1
-                    ? "AI finds people talking about your services online."
-                    : "Contact them directly and build your client base."}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+    leads.forEach((lead) => {
+      const card = document.createElement("div");
+      card.className = "bg-white p-4 rounded shadow";
+      card.innerHTML = `
+        <p>${lead}</p>
+        <div class="mt-2 space-x-2">
+          <button class="text-blue-600 underline">Save Lead</button>
+          <button class="text-blue-600 underline">Visit Profile</button>
+        </div>`;
+      leadsContainer.appendChild(card);
+    });
+  };
 
-      {/* Pricing */}
-      <section className="py-20 px-6">
-        <h3 className="text-3xl font-bold text-center mb-10">Pricing</h3>
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <Card>
-            <CardContent className="p-6 text-center">
-              <h4 className="text-2xl font-bold">Free Plan</h4>
-              <p className="my-4">Basic daily leads</p>
-              <Button variant="outline">Start Free</Button>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6 text-center">
-              <h4 className="text-2xl font-bold">Premium - $5.49/mo</h4>
-              <p className="my-4">Unlimited leads, real-time alerts, and priority support</p>
-              <Button>Go Premium</Button>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+  const showReferral = () => {
+    referralSection.style.display = "block";
+    premiumSection.style.display = "none";
+  };
 
-      {/* Footer */}
-      <footer className="bg-gray-100 py-6 text-center text-sm text-gray-500">
-        <p>&copy; 2025 Customer Radar. All rights reserved.</p>
-        <div className="mt-2 space-x-4">
-          <a href="#" className="hover:underline">Privacy Policy</a>
-          <a href="#" className="hover:underline">Terms of Service</a>
-        </div>
-      </footer>
-    </div>
-  );
-              }
+  const showPremium = () => {
+    premiumSection.style.display = "block";
+    referralSection.style.display = "none";
+  };
+
+  const copyReferral = () => {
+    const input = referralSection.querySelector("input");
+    input.select();
+    document.execCommand("copy");
+    alert("Referral link copied!");
+  };
+
+  const checkout = () => {
+    alert("Redirecting to Stripe checkout (mock)...");
+  };
+
+  const showLogin = () => {
+    alert("Login functionality coming soon!");
+  };
+
+  const showSignup = () => {
+    alert("Signup functionality coming soon!");
+  };
+
+  // Button Bindings
+  document.querySelectorAll("button[data-action]").forEach((btn) => {
+    const action = btn.getAttribute("data-action");
+    switch (action) {
+      case "scroll-pricing":
+        btn.addEventListener("click", () => scrollToSection("pricing"));
+        break;
+      case "login":
+        btn.addEventListener("click", showLogin);
+        break;
+      case "signup":
+        btn.addEventListener("click", showSignup);
+        break;
+      case "find-customers":
+        btn.addEventListener("click", findCustomers);
+        break;
+      case "show-premium":
+        btn.addEventListener("click", showPremium);
+        break;
+      case "show-referral":
+        btn.addEventListener("click", showReferral);
+        break;
+      case "copy-referral":
+        btn.addEventListener("click", copyReferral);
+        break;
+      case "checkout":
+        btn.addEventListener("click", checkout);
+        break;
+    }
+  });
+});
