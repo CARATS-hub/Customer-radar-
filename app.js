@@ -93,3 +93,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+import { supabase } from './supabaseClient'
+
+async function signUpAndStoreProfile(email, password, fullName, businessNiche) {
+  const { data: authRes, error: signUpError } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  if (signUpError) {
+    console.error('SignUp error:', signUpError);
+    return;
+  }
+
+  const user = authRes.user;
+
+  // Insert into custom 'users' table
+  await supabase.from("users").insert({
+    id: user.id,
+    full_name: fullName,
+    email: email
+  });
+
+  // Insert into 'profiles' table
+  await supabase.from("profiles").insert({
+    id: user.id,
+    business_niche: businessNiche,
+    referral_code: generateRandomCode(),
+    created_at: new Date()
+  });
+}
+
+function generateRandomCode(length = 6) {
+  return Math.random().toString(36).substring(2, 2 + length).toUpperCase();
+}
